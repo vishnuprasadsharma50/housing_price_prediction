@@ -20,10 +20,15 @@ def predict_api():
     print(output[0])
     return jsonify(output[0])
 
+@app.route('/predict', methods=['POST'])
+def predict():
+    data= [float(x) for x in request.form.values()]
+    final_input= np.array(data).reshape(1,-1)
+    output= model.predict(final_input)[0]
+    return render_template("home.html", prediction_text="The predicted price is {}.".format(output))
+            # Here prediction_text placeholder will be replaced by given value of Right hand side.
+
 if __name__=="__main__":
-    app.run(debug=True)
-
-
-
+    app.run(debug=True, port=8001)
 
 print("File Run Successfully")
